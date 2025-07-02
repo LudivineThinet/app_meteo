@@ -1,7 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
+import Weather from './composant/Weather'; 
+import Forecast from './composant/Forecast';
 
 export default function App() {
   const [location, setLocation] = useState(null);
@@ -27,11 +28,11 @@ export default function App() {
       setLocation(location.coords);
 
       // Url des API
-      const weather = `https://api.openweathermap.org/data/2.5/weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}&lang=fr&units=metric`;
+      const weather = `https://api.openweathermap.org/data/2.5/weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}&lang=fr&units=metric`
       const forecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}&lang=fr&units=metric`;
 
-      // météo actuelle
-      fetch(weather)
+      // Météo actuelle
+       fetch(weather)
         .then(response => response.json())
         .then(data => {
           setTemperature(data.main.temp); 
@@ -57,23 +58,14 @@ export default function App() {
   // Filtrer les prévisions du jour sélectionné
   const previsionsDuJour = previsions.filter(item => item.dt_txt.startsWith(jourSelectionne));
 
-  // Format jour lisible
+  // jour au format ecrit
   const formatJour = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
   };
 
-
-
-
-
-
-
-
-
   return (
     <ScrollView style={styles.container}>
-      <StatusBar style="auto" />
 
       {errorMsg ? (
         <Text style={styles.erreur}>{errorMsg}</Text>
@@ -83,62 +75,37 @@ export default function App() {
         <Text style={styles.chargement}>Chargement de la position...</Text>
       )}
 
-      {temperature && (
-        <View style={styles.blocActuel}>
-          <Text style={styles.titre}>Météo actuelle :</Text>
-          <Text style={styles.texte}>Température : {temperature} °C</Text>
-          <Text style={styles.texte}>Météo : {description}</Text>
 
-          {/* Affichage de l'icone, laisse le style ici */}
-          <Image
-            source={{ uri: `https://openweathermap.org/img/wn/${icone}@2x.png` }}
-            style={{ width: 50, height: 50 }}
-          />
-        </View>
-      )}
+      {/* Appel du composant Weather */}
+      <Weather temperature={temperature} description={description} icone={icone} />
 
-        {/* A partir d'ici, prévisions */}
-      <ScrollView horizontal contentContainerStyle={styles.listeJours}>
-        {joursDisponibles.map((jour, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.boutonJour,
-              jour === jourSelectionne && styles.boutonJourActif
-            ]}
-            onPress={() => setJourSelectionne(jour)}
-          >
-            <Text style={styles.texteJour}>{formatJour(jour)}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
 
-      {/* Prévisions du jour choisi */}
-      {previsionsDuJour.length > 0 && (
-        <ScrollView horizontal contentContainerStyle={styles.previsionsContainer}>
-          {previsionsDuJour.map((item, index) => {
-            const heure = item.dt_txt.split(' ')[1].slice(0, 5);
-            return (
-              <View key={index} style={styles.cartePrevision}>
-                <Text style={styles.heure}>{heure}</Text>
+      {/*  Appel Prévisions */}
+      <Forecast joursDisponibles={joursDisponibles} jourSelectionne={jourSelectionne} setJourSelectionne={setJourSelectionne}previsionsDuJour={previsionsDuJour} formatJour={formatJour} styles={styles} 
+/>
 
-                {/* Affichage de l'icone, laisse le style ici */}
-                <Image
-                  source={{ uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png` }}
-                  style={{ width: 50, height: 50 }}/>
-                <Text style={styles.texte}>{item.main.temp} °C</Text>
-                <Text style={styles.texte}>{item.weather[0].description}</Text>
-              </View>
-            );
-          })}
-        </ScrollView>
-      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-container: {
-  marginTop: 50,
-},
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f0f0f0',
+  },
+  erreur: {
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  position: {
+    fontSize: 16,
+    textAlign: 'center', 
+  },
+  chargement: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#888',
+  },
 });
