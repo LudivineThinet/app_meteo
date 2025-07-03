@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, ScrollView, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import Weather from './composant/Weather'; 
 import Forecast from './composant/Forecast';
 
+
 export default function App() {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+ //const [location, setLocation] = useState(null);
+ const [errorMsg, setErrorMsg] = useState(null);
   const API_KEY= "15626f454139e8469b3dad9c96994f02";
   const [temperature, setTemperature] = useState(null);
   const [description, setDescription] = useState(null);
@@ -14,6 +15,8 @@ export default function App() {
   const [previsions, setPrevisions] = useState([]);
   const [joursDisponibles, setJoursDisponibles] = useState([]);
   const [jourSelectionne, setJourSelectionne] = useState(null);
+  const [ville, setVille] = useState(null);
+
 
   useEffect(() => {
     // Demande d'acces à la loc de l'utilisateur
@@ -25,7 +28,7 @@ export default function App() {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords);
+      //setLocation(location.coords);
 
       // Url des API
       const weather = `https://api.openweathermap.org/data/2.5/weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}&lang=fr&units=metric`
@@ -38,6 +41,7 @@ export default function App() {
           setTemperature(data.main.temp); 
           setIcone(data.weather[0].icon); 
           setDescription(data.weather[0].description); 
+          setVille(data.name);
         })
         .catch(error => console.error('Erreur météo actuelle :', error));
 
@@ -64,27 +68,50 @@ export default function App() {
     return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
+     
+
+
     <ScrollView style={styles.container}>
 
-      {errorMsg ? (
+
+      {/*{errorMsg ? (
         <Text style={styles.erreur}>{errorMsg}</Text>
       ) : location ? (
         <Text style={styles.position}>Latitude : {location.latitude}, Longitude : {location.longitude}</Text>
       ) : (
         <Text style={styles.chargement}>Chargement de la position...</Text>
-      )}
+      )}*/}
+
+      
+
+   {temperature && description && (
+   
+   <Weather temperature={temperature} description={description} icone={icone} ville={ville} /> 
+   )}
 
 
-      {/* Appel du composant Weather */}
-      <Weather temperature={temperature} description={description} icone={icone} />
-
-
-      {/*  Appel Prévisions */}
-      <Forecast joursDisponibles={joursDisponibles} jourSelectionne={jourSelectionne} setJourSelectionne={setJourSelectionne}previsionsDuJour={previsionsDuJour} formatJour={formatJour} styles={styles} 
-/>
-
+      {/*  Appel composant Forecast */}
+      <Forecast joursDisponibles={joursDisponibles} jourSelectionne={jourSelectionne}
+       setJourSelectionne={setJourSelectionne}previsionsDuJour={previsionsDuJour} 
+       formatJour={formatJour} />
     </ScrollView>
+    
+
+
   );
 }
 
@@ -92,7 +119,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0',
+
   },
   erreur: {
     color: 'red',
@@ -108,4 +135,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#888',
   },
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  
+
+
 });

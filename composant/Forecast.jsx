@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 
-const Forecast = ({ joursDisponibles, jourSelectionne, setJourSelectionne, previsionsDuJour, formatJour, styles }) => {
+const Forecast = ({ joursDisponibles, jourSelectionne, setJourSelectionne, previsionsDuJour, formatJour }) => {
   return (
     <View>
       {/* choix du jour */}
@@ -45,38 +45,55 @@ const Forecast = ({ joursDisponibles, jourSelectionne, setJourSelectionne, previ
 };
 
 const styles = StyleSheet.create({
-    listeJours: {
-        flexDirection: 'row',
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-    },
-    boutonJour: {
-        padding: 10,
-        marginRight: 5,
-        borderRadius: 5,
-        backgroundColor: '#e0e0e0',
-    },
-    boutonJourActif: {
-        backgroundColor: '#007bff',
-    },
-    texteJour: {
-        color: '#333',
-    },
-    previsionsContainer: {
-        flexDirection: 'row',
-        paddingVertical: 10,
-    },
-    cartePrevision: {
-        marginRight: 10,
-        alignItems: 'center',
-    },
-    heure: {
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    texte: {
-        textAlign: 'center',
-    }
-    });     
+  listeJours: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    justifyContent: 'center',
+    gap: 10,
+  },
+  boutonJour: {
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  boutonJourActif: {
+    borderColor: '#000',
+    borderWidth: 2,
+  },
+  texteJour: {
+    fontSize: 12,
+    textTransform: 'capitalize',
+    color: '#333',
+    flexWrap: 'wrap',
+  },
+  previsionsContainer: {
+    flexDirection: 'row',
+    paddingVertical: 15,
+    gap: 15,
+    justifyContent: 'center',
+  },
+  cartePrevision: {
+    alignItems: 'center',
+    padding: 12,
+    marginHorizontal: 5,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    width: 100,
+  },
+  heure: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  texte: {
+    fontSize: 14,
+    textAlign: 'center',
+  },
+})
+
+    
 
 export default Forecast;
