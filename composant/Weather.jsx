@@ -1,15 +1,15 @@
 import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
 
 const getBackgroundImage = (description) => {
-  if (!description) return require('../assets/default.jpg'); 
-  if (description.includes('ciel dégagé')) return require('../assets/soleil.jpg');
-  if (description.includes('fragmentés')) return require('../assets/nuageux.jpg');
-  if (description.includes('pluie')) return require('../assets/pluie.jpg');
-  if (description.includes('orage')) return require('../assets/orage.jpg');
-  if (description.includes('neige')) return require('../assets/neige.jpg');
-  if (description.includes('quelques')) return require('../assets/fewClouds.jpg');
+  if (!description) return require('../assets/imagefond/default.jpg'); 
+  if (description.includes('ciel dégagé')) return require('../assets/imagefond/soleil.jpg');
+  if (description.includes('fragmentés')) return require('../assets/imagefond/nuageux.jpg');
+  if (description.includes('pluie')) return require('../assets/imagefond/pluie.jpg');
+  if (description.includes('orage')) return require('../assets/imagefond/orage.jpg');
+  if (description.includes('neige')) return require('../assets/imagefond/neige.jpg');
+  if (description.includes('quelques')) return require('../assets/imagefond/fewClouds.jpg');
 
-  return require('../assets/default.jpg');
+  return require('../assets/imagefond/default.jpg');
 };
 
 
